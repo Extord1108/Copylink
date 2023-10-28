@@ -5,5 +5,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     navigator.clipboard.writeText(url);
   } else if (request.format === "md") {
     navigator.clipboard.writeText("[" + title + "](" + url + ")");
+  } else if (request.format === "iframe") {
+    navigator.clipboard.writeText('<iframe src="' + url + '"></iframe>');
   }
 });

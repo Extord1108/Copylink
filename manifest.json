@@ -10,6 +10,15 @@
     "64": "icons/icon64.png",
     "128": "icons/icon128.png"
   },
+  "commands": {
+    "copy-md": {
+      "suggested_key": {
+        "windows": "Ctrl+Shift+V",
+        "mac": "Command+Shift+V"
+      },
+      "description": "复制Markdown格式"
+    }
+  },
   "content_scripts": [
     {
       "matches": ["https://*/*"],
