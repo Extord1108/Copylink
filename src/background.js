@@ -1,34 +1,75 @@
 //初始化
 function initContextMenus() {
+  /**************复制链接**************/
   chrome.contextMenus.create({
     type: "normal",
     title: "复制网页链接",
-    contexts: ["all"],
-    id: "menu-page",
+    contexts: ["page"],
+    id: "menu-copy",
   });
 
   chrome.contextMenus.create({
     type: "normal",
     title: "Markdown格式    Ctrl+Shift+V",
-    contexts: ["all"],
-    parentId: "menu-page",
-    id: "menu-page-md",
+    contexts: ["page"],
+    parentId: "menu-copy",
+    id: "menu-copy-md",
   });
 
   chrome.contextMenus.create({
     type: "normal",
     title: "纯链接格式",
-    contexts: ["all"],
-    parentId: "menu-page",
-    id: "menu-page-link",
+    contexts: ["page"],
+    parentId: "menu-copy",
+    id: "menu-copy-link",
   });
 
   chrome.contextMenus.create({
     type: "normal",
     title: "iframe格式",
-    contexts: ["all"],
-    parentId: "menu-page",
-    id: "menu-page-iframe",
+    contexts: ["page"],
+    parentId: "menu-copy",
+    id: "menu-copy-iframe",
+  });
+
+  /*************搜索内容***************/
+  chrome.contextMenus.create({
+    type: "normal",
+    title: "搜索选中内容",
+    contexts: ["selection"],
+    id: "menu-search",
+  });
+
+  chrome.contextMenus.create({
+    type: "normal",
+    title: "在知乎中搜索",
+    contexts: ["selection"],
+    parentId: "menu-search",
+    id: "menu-search-zhihu",
+  });
+
+  chrome.contextMenus.create({
+    type: "normal",
+    title: "在Bilibili中搜索",
+    contexts: ["selection"],
+    parentId: "menu-search",
+    id: "menu-search-bili",
+  });
+
+  chrome.contextMenus.create({
+    type: "normal",
+    title: "在Bing中搜索",
+    contexts: ["selection"],
+    parentId: "menu-search",
+    id: "menu-search-bing",
+  });
+
+  chrome.contextMenus.create({
+    type: "normal",
+    title: "在Google中搜索",
+    contexts: ["selection"],
+    parentId: "menu-search",
+    id: "menu-search-Google",
   });
 }
 
@@ -38,13 +79,14 @@ chrome.contextMenus.onClicked.addListener(async (data) => {
     active: true,
     lastFocusedWindow: true,
   });
-  if (data.menuItemId == "menu-page-link") {
-    await chrome.tabs.sendMessage(tab.id, { format: "link" });
-  } else if (data.menuItemId == "menu-page-md") {
-    await chrome.tabs.sendMessage(tab.id, { format: "md" });
-  } else if (data.menuItemId == "menu-page-iframe") {
-    await chrome.tabs.sendMessage(tab.id, { format: "iframe" });
-  }
+  let func = data.menuItemId.split("-")[1];
+  let target = data.menuItemId.split("-")[2];
+  let content = data.selectionText;
+  await chrome.tabs.sendMessage(tab.id, {
+    func: func,
+    target: target,
+    content: content,
+  });
 });
 
 //快捷键
