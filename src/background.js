@@ -69,7 +69,15 @@ function initContextMenus() {
     title: "在Google中搜索",
     contexts: ["selection"],
     parentId: "menu-search",
-    id: "menu-search-Google",
+    id: "menu-search-google",
+  });
+
+  chrome.contextMenus.create({
+    type: "normal",
+    title: "在谷歌学术中搜索",
+    contexts: ["selection"],
+    parentId: "menu-search",
+    id: "menu-search-scholar",
   });
 }
 
@@ -81,7 +89,7 @@ chrome.contextMenus.onClicked.addListener(async (data) => {
   });
   let func = data.menuItemId.split("-")[1];
   let target = data.menuItemId.split("-")[2];
-  let content = data.selectionText;
+  let content = data.mediaType == "image" ? data.srcUrl : data.selectionText;
   await chrome.tabs.sendMessage(tab.id, {
     func: func,
     target: target,

@@ -6,6 +6,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     bili: "https://www.bilibili.com/search?keyword=",
     bing: "https://www.bing.com/search?q=",
     google: "https://www.google.com/search?q=",
+    scholar: "https://scholar.google.com/scholar?q=",
   };
   if (request.func == "copy") {
     if (request.target === "link") {
